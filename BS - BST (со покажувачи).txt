@@ -1,0 +1,265 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct Node{
+    int val;
+    Node* left;
+    Node* right;
+    Node (int v) : val(v) , left(nullptr) , right(nullptr) {}
+};
+void dfs_preorder_recursive(Node* segasen = nullptr, Node* root= nullptr)
+    {
+        if(!segasen)
+        {
+            segasen=root;
+        }
+        if(!segasen){return;}
+
+        Node* curr = segasen;
+        cout<<curr->val<<" ";
+        if(curr->left)
+        {
+        dfs_preorder_recursive(curr->left);
+        }
+        if(curr->right)
+        {
+        dfs_preorder_recursive(curr->right);
+        }
+    }
+    void dfs_inorder_recursive(Node* segasen = nullptr, Node* root= nullptr)
+    {
+        if(!segasen)
+        {
+            segasen=root;
+        }
+        if(!segasen){return;}
+        Node* curr = segasen;
+        if(curr->left)
+        {
+            dfs_inorder_recursive(curr->left);
+        }
+        cout<<curr->val<<" ";
+        if(curr->right)
+        {
+            dfs_inorder_recursive(curr->right);
+        }
+
+
+    }
+    void dfs_postorder_recursive(Node* segasen = nullptr, Node* root= nullptr)
+    {
+        if(!segasen)
+        {
+            segasen=root;
+        }
+        if(!segasen){return;}
+        Node* curr = segasen;
+        if(curr->left)
+        {
+            dfs_postorder_recursive(curr->left);
+        }
+        if(curr->right)
+        {
+            dfs_postorder_recursive(curr->right);
+        }
+        cout<<curr->val<<" ";
+    }
+    void BFS(Node* segasen = nullptr, Node* root= nullptr)
+    {
+        if(!segasen)
+        {
+            segasen=root;
+        }
+        if(!segasen){return;}
+        queue<Node*> q;
+        q.push(segasen);
+        while(!q.empty())
+        {
+            Node* seganso = q.front();
+            q.pop();
+            cout<<seganso->val<<" ";
+            if(seganso->left)
+            {
+                 q.push(seganso->left);
+            }
+            if(seganso->right)
+            {
+                q.push(seganso->right);
+            }
+
+        }
+}
+int suma(Node* head = nullptr, Node* root = nullptr)
+    {
+        if(!head)
+        {
+            head =root;
+        }
+        if(!head)
+        {
+            return 0;
+        }
+        return (head->val + suma(head->left) + suma(head->right));
+
+
+    }
+struct BT{
+    Node* root = nullptr;
+    void append(int val)
+    {
+        Node* curr = new Node(val);
+        if(!root)
+        {
+            root = curr;
+            return;
+        }
+        queue<Node*> q;
+        q.push(root);
+        while(true)
+        {
+            Node* seganso = q.front();
+            q.pop();
+            if(seganso->left == nullptr)
+            {
+                seganso->left = curr;
+                return;
+            }
+            else if(seganso->right == nullptr)
+            {
+                seganso->right = curr;
+                return;
+            }
+            else
+            {
+                q.push(seganso->left);
+                q.push(seganso->right);
+            }
+        }
+
+    }
+    void dfs_preorder_r() {dfs_preorder_recursive(nullptr,root);}
+    void dfs_inorder_r()   { dfs_inorder_recursive(nullptr,root); }
+    void dfs_postorder_r() { dfs_postorder_recursive(nullptr,root); }
+    void bfs_tree() {BFS(nullptr,root);}
+    int sum(){return suma(nullptr,root);}
+    bool Find(int vrednost, Node* segasen = nullptr)
+    {
+        if(!segasen)
+        {
+            segasen=root;
+        }
+        if(!segasen){return false;}
+
+        Node* curr = segasen;
+        if(vrednost==curr->val)
+        {
+            return true;
+        }
+        if(curr->left)
+        {
+          if(Find(vrednost,curr->left))
+          {
+             return true;
+          }
+        }
+        if(curr->right)
+        {
+          if(Find(vrednost,curr->right))
+          {
+              return true;
+          }
+        }
+        return false;
+    }
+
+
+
+};
+struct BST{
+    Node* root = nullptr;
+    void append(int val)
+    {
+        Node* curr = new Node (val);
+        if(!root)
+        {
+            root=curr;
+            return;
+        }
+        Node* segasno = root;
+        while(true)
+        {
+        if(segasno->val > curr->val)
+        {
+            if(segasno->left == nullptr)
+            {
+                segasno->left = curr;
+                return;
+            }
+            else
+            {
+               segasno = segasno->left;
+            }
+        }
+        else if(segasno->val < curr->val)
+        {
+            if(segasno->right == nullptr)
+            {
+                segasno->right = curr;
+                return;
+            }
+            else
+            {
+                segasno=segasno->right;
+            }
+
+
+         }
+         else
+         {
+             delete curr;
+             return;
+         }
+       }
+
+    }
+    bool Find(int v)
+    {
+        Node* curr = root;
+        while(curr)
+        {
+            if(v==curr->val)
+            {
+              return true;
+            }
+            else if(v < curr->val)
+            {
+                curr= curr->left;
+            }
+            else
+            {
+                curr = curr->right;
+            }
+
+        }
+        return false;
+    }
+
+    void dfs_preorder_r() {dfs_preorder_recursive(nullptr,root);}
+    void dfs_inorder_r()   { dfs_inorder_recursive(nullptr,root); }
+    void dfs_postorder_r() { dfs_postorder_recursive(nullptr,root); }
+    void bfs_tree() {BFS(nullptr,root);}
+    int sum(){return suma(nullptr,root);}
+
+};
+int main()
+{
+    BST b;
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)
+    {
+        b.append(i);
+    }
+    cout<<b.sum();
+
+    return 0;
+}
