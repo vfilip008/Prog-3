@@ -1,0 +1,131 @@
+#include <bits/stdc++.h>
+using namespace std;
+void dfs_preorder(int i, vector<int>& a )
+{
+    if (i >= a.size()) return;
+    cout << a[i] << " ";
+    dfs_preorder(2*i+1,a);
+    dfs_preorder(2*i+2,a);
+}
+
+void dfs_inorder(int i, vector<int>& a)
+{
+    if (i >= a.size()) return;
+    dfs_inorder(2*i+1,a);
+    cout << a[i] << " ";
+    dfs_inorder(2*i+2,a);
+}
+
+void dfs_postorder(int i, vector<int>& a)
+{
+    if (i >= a.size()) return;
+    dfs_postorder(2*i+1,a);
+    dfs_postorder(2*i+2,a);
+    cout << a[i] << " ";
+}
+void BFS_global(int i,vector<int>& a,vector<bool>& used)
+{
+    if (i >= a.size() || !used[i]) return;
+    queue<int> q;
+    q.push(i);
+    while (!q.empty())
+    {
+        int idx = q.front();
+        q.pop();
+        cout << a[idx] << " ";
+        int left = 2*idx + 1;
+        int right = 2*idx + 2;
+        if (left < a.size() && used[left]) q.push(left);
+        if (right < a.size() && used[right]) q.push(right);
+    }
+}
+struct BT
+{
+    vector<int> a;
+    void append(int val) {
+        a.push_back(val);
+    }
+    void dfs_preorder_r() {::dfs_preorder(0,a);}
+    void dfs_inorder_r() {::dfs_inorder(0,a);}
+    void dfs_postorder_r() {::dfs_postorder(0,a);}
+
+    void BFS() {
+        for (int x : a)
+        {
+            cout << x << " ";
+        }
+    }
+    int sum() {
+        int s = 0;
+        for (int x : a) s += x;
+        return s;
+    }
+
+    bool Find(int v, int i = 0) {
+        if (i >= a.size()) return false;
+        if (a[i] == v) return true;
+        return Find(v, 2*i+1) || Find(v, 2*i+2);
+    }
+};
+struct BST
+{
+    vector<int> a;
+    vector<bool> used;
+    BST() {
+        a.resize(1000000, 0);
+        used.resize(1000000, false);
+    }
+    void append(int val) {
+        int i = 0;
+        while (true)
+        {
+            if(!used[i])
+            {
+                used[i] = true;
+                a[i] = val;
+                return;
+            }
+            if (val < a[i]) i = 2*i+1;
+            else if (val > a[i]) i = 2*i+2;
+            else return;
+        }
+    }
+    void dfs_preorder_r() {::dfs_preorder(0,a);}
+    void dfs_inorder_r() {::dfs_inorder(0,a);}
+    void dfs_postorder_r() {::dfs_postorder(0,a);}
+    void BFS(){::BFS_global(0,a,used);}
+
+
+    bool Find(int val) {
+        int i = 0;
+        while (i < a.size() && used[i])
+        {
+            if (val == a[i]) return true;
+            if (val < a[i]) i = 2*i+1;
+            else i = 2*i+2;
+        }
+        return false;
+    }
+
+    int sum(int i = 0)
+    {
+        if (i >= a.size() || !used[i]) return 0;
+        return a[i] + sum(2*i+1) + sum(2*i+2);
+    }
+};
+
+
+int main()
+{
+    BST b;
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)
+    {
+         b.append(i);
+    }
+    b.BFS();
+
+
+    return 0;
+}
