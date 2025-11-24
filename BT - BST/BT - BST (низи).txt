@@ -124,8 +124,7 @@ int main()
     {
          b.append(i);
     }
-    b.BFS();
-
 
     return 0;
 }
+
