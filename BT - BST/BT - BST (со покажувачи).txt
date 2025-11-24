@@ -259,7 +259,8 @@ int main()
     {
         b.append(i);
     }
-    cout<<b.sum();
+    b.sum();
 
     return 0;
 }
+
