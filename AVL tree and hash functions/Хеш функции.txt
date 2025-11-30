@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+int sum(const string& str)
+{
+    int k=0;
+    for(int i=0;i<str.size();i++)
+    {
+        k+=str[i];
+    }
+    return k;
+
+}
+string dolzinadve(const string& str)
+{
+    if(str.size()<3)
+    {
+        return str;
+    }
+    else
+    {
+        string s = "";
+        for(int i=0;i<2;i++)
+        {
+            s+=str[i];
+        }
+        return s;
+
+    }
+}
+int main()
+{
+    unordered_multimap<int,string> dolzina;
+    unordered_multimap<int,string> suma;
+    unordered_multimap<char,string> edna;
+    unordered_multimap<string,string> dve;
+    ifstream in ("zborovi.txt");
+    string s;
+    while (in>>s)
+    {
+        dolzina.insert({s.size(),s});
+        suma.insert({sum(s),s});
+        edna.insert({s[0],s});
+        dve.insert({dolzinadve(s),s});
+    }
+
+
+
+
+}
