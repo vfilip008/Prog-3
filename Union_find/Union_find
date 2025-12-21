@@ -1,1 +1,74 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int find (int x,vector<int>& parent) {
+    if (parent[x] == x)
+        return x;
+    return find(parent[x],parent);
+}
+int find_size(int x,vector<int>& parent) {
+    if (parent[x] < 0)
+        return x;
+    return find_size(parent[x],parent);
+}
+int find_smart(int x,vector<int>& parent) {
+    if (parent[x] == x)
+        return x;
+    return parent[x] = find_smart(parent[x],parent);
+}
+int find_rank(int x,vector<int>& parent) {
+    if (parent[x] < 0)
+        return x;
+    return parent[x] = find_rank(parent[x], parent);
+}
+void union_(int x, int y, vector<int>& parent){
+    int rx = find(x,parent);
+    int ry = find(y,parent);
+    if (rx != ry) {
+        parent[ry] = rx;
+    }
+    return;
+}
+void union_size(int x, int y,vector<int>& parent) {
 
+    int rx = find_size(x,parent);
+    int ry = find_size(y,parent);
+    if (rx == ry) return;
+    if (parent[rx] < parent[ry]) {
+        parent[rx] += parent[ry];
+        parent[ry] = rx;
+    }
+    else {
+        parent[ry] += parent[rx];
+        parent[rx] = ry;
+    }
+    return;
+}
+void union_by_rank(int x, int y,vector<int>& parent) {
+    int rx = find_rank(x, parent); 
+    int ry = find_rank(y, parent);
+    if (rx==ry) return;
+    if (parent[rx]<parent[ry]){
+        parent[ry]=rx;
+    }else if (parent[rx]>parent[ry])
+    {
+        parent[rx]=ry;
+    }
+    else {
+        parent[ry]=rx;
+        parent[rx]--;
+
+    }
+    return;
+}
+int main() {
+    int n=5;
+    vector<int> parent(n);
+    for (int i=0;i<n;i++) {
+        parent[i] = i;
+    }
+    parent.assign(parent.size(), -1);
+    //Parent dali ke pokazuva kon sebe ili -1 zavisi so koi union sakame da rabotime.
+    return 0;
+
+}
