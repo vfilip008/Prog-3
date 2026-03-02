@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ifstream inputFile("The Project Gutenberg eBook of Anna.txt");
+    map<char,long long> m;
+    char ch;
+    if (!inputFile) {
+        std::cerr << "Error opening file: " << "Project" << std::endl;
+        return 1;
+    }
+    long long temp=0;
+    while (inputFile.get(ch)) {
+        m[ch]++;
+        temp++;
+    }
+    vector<pair<char, long long>> vec(m.begin(), m.end());
+    sort(vec.begin(), vec.end(), [](const auto &a, const auto &b) {
+         return a.second < b.second;   // ascending
+     });
+    cout<<"Original value: "<<temp<<endl;
+    cout<<"Compresed file: ";
+    long long t =0;
+    long long r =1;
+    for (auto au : vec) {
+        t+= au.second * r;
+        r++;
+    }
+    cout<<t;
+ 
+ 
+}
